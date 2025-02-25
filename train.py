@@ -5,6 +5,14 @@ from torchvision import datasets, transforms
 from torch.utils.data import DataLoader
 from model import ConvNet
 
+def get_device():
+    if torch.cuda.is_available():
+        return torch.device("cuda")
+    elif torch.backends.mps.is_available():
+        return torch.device("mps")
+    else:
+        return torch.device("cpu")
+
 def train(model, device, train_loader, optimizer, epoch):
     model.train()
     for batch_idx, (data, target) in enumerate(train_loader):
@@ -36,7 +44,8 @@ def test(model, device, test_loader):
           f'({100. * correct / len(test_loader.dataset):.2f}%)\n')
 
 def main():
-    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+    device = get_device()
+    print(f"Using device: {device}")
     
     # Data loading
     transform = transforms.Compose([
@@ -60,7 +69,7 @@ def main():
         test(model, device, test_loader)
 
     # Save the model
-    torch.save(model.state_dict(), "mnist_model.pth")
+    torch.save(model.state_dict(), "models/mnist_model_2.pth")
 
 if __name__ == '__main__':
     main()

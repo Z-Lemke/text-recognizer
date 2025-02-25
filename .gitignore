@@ -1,0 +1,14 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+venv/
+*.so
+
+# Data
+data/
+mnist_model.pth
+
+# IDE
+.vscode/
+.idea/
